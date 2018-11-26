@@ -1,0 +1,79 @@
+
+{% extends 'base.html' %}
+
+{% block header %}
+<style>
+.button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        width:50%;
+        
+    }
+
+    .button2 {background-color: #008CBA;} /* Blue */
+    .button3 {background-color: #f44336;} /* Red */
+</style>
+{% endblock %}
+{% block content %}
+
+<h2>{{ q }}</h2><br>
+{% if s != 'jdfwk' %}
+    {% if c1 == c %}
+        <button class="button">{{ c1 }}</button><br>
+    {% elif s == c1 %}
+            <button class="button button3">{{ c1 }}</button><br>
+    {% else %}
+        <button class="button button2">{{ c1 }}</button><br>
+    {% endif %}
+
+
+
+    {% if c2 == c %}
+        <button class="button">{{ c2 }}</button><br>
+    {% elif s == c2 %}
+            <button class="button button3">{{ c2 }}</button><br>
+    {% else %}
+        <button class="button button2">{{ c2 }}</button><br>
+    {% endif %}
+
+
+    {% if c3 == c %}
+        <button class="button">{{ c3 }}</button><br>
+    {% elif s == c3 %}
+            <button class="button button3">{{ c3 }}</button><br>
+    {% else %}
+        <button class="button button2">{{ c3 }}</button><br>
+    {% endif %}
+
+
+    {% if c4 == c %}
+        <button class="button">{{ c4 }}</button><br>
+    {% elif s == c4 %}
+            <button class="button button3">{{ c4 }}</button><br>
+    {% else %}
+        <button class="button button2">{{ c4 }}</button><br>
+    {% endif %}
+
+    <!---<meta http-equiv="refresh" content="2.2" url={% url 'qna' %} /> --->
+{% else %}
+    <form action="{% url 'qna' %}" method="post">
+    {% csrf_token %}
+        <button class="button button2" name="selected" value="{{ c1 }}"> {{ c1 }} </button><br>
+        <button class="button button2" name="selected" value="{{ c2 }}"> {{ c2 }} </button><br>
+        <button class="button button2" name="selected" value="{{ c3 }}"> {{ c3 }} </button><br>
+        <button class="button button2" name="selected" value="{{ c4 }}"> {{ c4 }} </button><br>
+    </form>
+{% endif %}
+
+<a href="{% url 'qna' %}" >Next Question</a>
+<br>
+<a href="{% url 'score' %}" > End Quiz</a>
+{% endblock %}

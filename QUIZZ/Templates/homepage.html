@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <main>
+ {% if user.is_authenticated %}
+  Hi {{ user.username }}!
+  <h1 style="align-content: center;"><a href="{% url 'qna' %}">START QUIZ NOW!!</a></h1>
+{% else %}
+  <p>You are not logged in!</p>
+  <a href="{% url 'login' %}">Login</a>
+  <a href="{% url 'signup' %}">Signup</a>
+{% endif %}
+  </main>
+{% endblock %}
