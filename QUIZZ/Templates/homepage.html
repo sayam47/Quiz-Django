@@ -4,9 +4,15 @@
   <main>
  {% if user.is_authenticated %}
   Hi {{ user.username }}!
-  <h1 style="align-content: center;"><a href="{% url 'qna' %}">START QUIZ NOW!!</a></h1>
+
+  <div class="samyak" style="align-items: center;align-self: center;align-content: center;"> <a href="{% url 'qna' %}"><img src="https://tse4.mm.bing.net/th?id=OIP.UW-8goi0oJPiiJ6nFOVhSgHaFj&pid=15.1&P=0&w=300&h=300" height=250px ></a></div>
+
+
 {% else %}
-  <p>You are not logged in!</p>
+  <h2 align=center>WELCOME TO QUIZZ</h2>
+
+  <img src="https://sasonline.in/wp-content/uploads/2016/03/quiz_150908823.jpg" height=650px>
+  <br>
   <a href="{% url 'login' %}">Login</a>
   <a href="{% url 'signup' %}">Signup</a>
 {% endif %}

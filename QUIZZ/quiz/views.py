@@ -2,9 +2,11 @@ from django.shortcuts import render,HttpResponse
 import random
 import json
 from django.contrib.auth.decorators import login_required
-
-#from .models import QuizQna as Q,QuizScore as S,QuizHistory as H,AuthUser as AU
 import pymysql.cursors
+from django.contrib.auth import login, authenticate
+from django.shortcuts import render, redirect
+from .models import QuizScore
+
 connection = pymysql.connect(host='localhost',
                              user='root',
                              password='samyak20',
@@ -13,13 +15,22 @@ connection = pymysql.connect(host='localhost',
                              cursorclass=pymysql.cursors.DictCursor)
 
 
+
 def homepage(request):
 	return render(request,'homepage.html')
 prev_a=9
 
+
+
+
+
+
 @login_required
 def score(request):
 	error=True
+	if 'q' not in request.session.keys():
+		request.session['q']=0
+		request.session['score']=0
 	if request.session['q']==0:
 		error=False
 	context={
@@ -32,10 +43,11 @@ def score(request):
 		cursor.execute(sql)
 		connection.commit()
 		cursor.close()
-	request.session['q']=0
-	request.session['score']=0
-
 	return render(request,'score.html',context)
+
+
+
+
 
 
 @login_required
@@ -78,10 +90,15 @@ def qna(request):
 	}
 	return render(request,'qna.html',context)
 
+
+
+
+
+
 def lb(request):
 	global html
 	with connection.cursor() as cursor:
-			sql = "SELECT user,s,noq FROM `quiz_score` ORDER BY s DESC, noq ASC"
+			sql = "SELECT user,s,noq FROM `quiz_score` ORDER BY s DESC"
 			cursor.execute( sql )
 			m=list(cursor.fetchall())
 			k=[]
@@ -102,9 +119,13 @@ def lb(request):
 
 
 
+def profile(request,user_name):
+	with connection.cursor() as cursor:
+		sql = " SELECT * FROM `quiz_score` WHERE `user` = '{}'".format(user_name)
+		cursor.execute(sql)
+		m=dict(cursor.fetchone())
+		sql= " SELECT count(`user`) as c FROM `quiz_score` WHERE `s` > {} ".format(m['s'])
+		cursor.execute(sql)
+		c=dict(cursor.fetchone())
 
-
-
-
-
-
+	return render(request,'profile.html',{'user':m['user'], 's':m['s'],'noq':m['noq'],'c':int(c['c'])+1})
